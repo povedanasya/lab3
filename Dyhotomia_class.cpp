@@ -36,6 +36,7 @@ double Dyhotomia_class::calcRoot() {
     if (calcFunction(a) * calcFunction(b) > 0)
         return NAN;
 
+    iterBisection = 0;
     double c;
     do {
         c = (a + b) / 2.0;
@@ -43,6 +44,7 @@ double Dyhotomia_class::calcRoot() {
             a = c;
         else
             b = c;
+        iterBisection++;
     } while ((b - a) > eps);
 
     return (a + b) / 2.0;
@@ -52,12 +54,14 @@ double Dyhotomia_class::calcRootNewton() {
     if (calcFunction(a) * calcFunction(b) > 0)
         return NAN;
 
+    iterNewton = 0;
     double x = b;
 
     while (fabs(calcFunction(x)) > eps) {
         double d = derivate(x);
         if (fabs(d) < 1e-12) return NAN;
         x -= calcFunction(x) / d;
+        iterNewton++;
     }
 
     return x;
@@ -75,12 +79,12 @@ void Dyhotomia_class::run() {
     double rootNewton = calcRootNewton();
 
     if (!isnan(rootBis))
-        cout << "Bisection method: x = " << rootBis << endl;
+        cout << "Bisection method: x = " << rootBis << "  (iterations: " << iterBisection << ")" << endl;
     else
         cout << "Bisection method: no root found on interval" << endl;
 
     if (!isnan(rootNewton))
-        cout << "Newton's method:  x = " << rootNewton << endl;
+        cout << "Newton's method:  x = " << rootNewton << "  (iterations: " << iterNewton << ")" << endl;
     else
         cout << "Newton's method: no root found on interval" << endl;
 }

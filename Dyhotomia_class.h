@@ -15,6 +15,7 @@ public:
 
 private:
     double a, b, eps;
+    int iterBisection, iterNewton;
 };
 
 #endif
